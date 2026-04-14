@@ -1,0 +1,464 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.outer{display:flex;flex-direction:column;align-items:center;gap:24px;padding:16px 8px;background:transparent}
+.phone{width:375px;height:812px;background:#fff;border-radius:44px;border:10px solid #1a1a2e;overflow:hidden;position:relative;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:flex;flex-direction:column}
+.screen{display:none;flex:1;flex-direction:column;overflow:hidden}
+.screen.active{display:flex}
+.scrollable{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.scrollable::-webkit-scrollbar{display:none}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 10px;background:#fff;border-bottom:0.5px solid #f0f0f0;flex-shrink:0}
+.logo{font-size:18px;font-weight:800;color:#00355F;letter-spacing:-.4px}
+.logo span{color:#FFC72C}
+.avatar{width:32px;height:32px;border-radius:50%;background:#00355F;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#FFC72C}
+.bottom-nav{display:flex;background:#fff;border-top:0.5px solid #e8edf4;padding:6px 0 18px;flex-shrink:0}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 0}
+.nav-item:active{opacity:.6}
+.nav-label{font-size:9px;color:#9aa0ab;font-weight:500}
+.nav-label.active{color:#00355F;font-weight:700}
+.nav-icon{font-size:18px;color:#9aa0ab;line-height:1}
+.nav-icon.active{color:#00355F}
+.nav-line{height:2px;width:24px;background:#FFC72C;border-radius:2px;margin-top:1px}
+
+.ai-section{padding:12px 16px 8px;background:#fff;flex-shrink:0}
+.ai-pill{display:flex;align-items:center;background:#f5f6f8;border-radius:50px;padding:10px 14px;gap:8px;border:0.5px solid #e8edf4}
+.ai-pill span{flex:1;font-size:12px;color:#9aa0ab}
+.chips{display:flex;gap:7px;margin-top:9px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;font-size:10px;font-weight:600;color:#00355F;background:#EAF2FF;border-radius:20px;padding:5px 10px;border:0.5px solid #c5d9f5;cursor:pointer;white-space:nowrap}
+.chip.sel{background:#00355F;color:#FFC72C;border-color:#00355F}
+
+.banner-trip{margin:0 16px 12px;border-radius:14px;background:#00355F;padding:13px 14px;display:flex;align-items:center;justify-content:space-between}
+.btn-yellow{font-size:10px;font-weight:700;color:#00355F;background:#FFC72C;border-radius:20px;padding:6px 11px;cursor:pointer;white-space:nowrap;border:none}
+.btn-navy{font-size:10px;font-weight:700;color:#fff;background:#00355F;border-radius:20px;padding:6px 11px;cursor:pointer;white-space:nowrap;border:none}
+
+.sec-head{padding:0 16px 8px}
+.sec-title{font-size:14px;font-weight:700;color:#00355F}
+.sec-sub{font-size:10px;color:#8a9bb0;margin-top:1px}
+
+.hscroll{display:flex;gap:10px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+.hcard{flex-shrink:0;width:148px;border-radius:14px;background:#fff;border:0.5px solid #e8edf4;overflow:hidden;cursor:pointer}
+.hcard:active{border-color:#FFC72C}
+.hcard-img{height:82px;width:100%;display:flex;align-items:flex-end;padding:5px}
+.hcard-body{padding:7px 9px 9px}
+.hcard-name{font-size:11px;font-weight:700;color:#1a2a3a;margin-bottom:2px;line-height:1.3}
+.hcard-loc{font-size:9px;color:#8a9bb0;margin-bottom:4px}
+.hcard-row{display:flex;justify-content:space-between;align-items:center}
+.hcard-price{font-size:11px;font-weight:700;color:#00355F}
+.rec-tag{font-size:8px;font-weight:700;background:rgba(255,255,255,.9);color:#7a5a00;border-radius:8px;padding:2px 6px}
+.star-txt{font-size:9px;color:#FFC72C}
+.trust-txt{font-size:8px;color:#6a7f94;margin-top:2px}
+
+.vfeed{padding:0 16px 12px;display:flex;flex-direction:column;gap:10px}
+.vcard{border-radius:14px;background:#fff;border:0.5px solid #e8edf4;overflow:hidden;cursor:pointer}
+.vcard:active{border-color:#FFC72C}
+.vcard-img{height:130px;width:100%;display:flex;align-items:flex-start;padding:9px;justify-content:space-between}
+.vcard-body{padding:9px 12px 11px}
+.cat-tag{font-size:9px;font-weight:700;border-radius:9px;padding:2px 8px;display:inline-block;margin-bottom:5px}
+.vcard-name{font-size:13px;font-weight:700;color:#1a2a3a;margin-bottom:3px}
+.vcard-review{font-size:10px;color:#6a7f94;margin-bottom:5px;line-height:1.4}
+.vcard-btm{display:flex;justify-content:space-between;align-items:center}
+.vcard-price{font-size:12px;font-weight:700;color:#00355F}
+.cat-badge-sm{font-size:8px;font-weight:700;background:rgba(255,255,255,.85);color:#00355F;border-radius:7px;padding:2px 7px}
+.save-icon{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer}
+
+.timeline-wrap{padding:0 16px 16px;display:flex;flex-direction:column}
+.day-label{font-size:11px;font-weight:700;color:#00355F;background:#EAF2FF;border-radius:8px;padding:5px 10px;margin:12px 0 8px;display:inline-block}
+.day-group{display:flex;gap:10px}
+.tl-line-col{display:flex;flex-direction:column;align-items:center;padding-top:4px}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:#FFC72C;flex-shrink:0;border:2px solid #00355F}
+.tl-dot.alert{background:#EF9F27;border-color:#854F0B}
+.tl-line{width:2px;flex:1;background:#e0e8f0;min-height:20px}
+.tl-cards{flex:1;display:flex;flex-direction:column;gap:8px;padding-bottom:8px}
+.bk-card{background:#fff;border:0.5px solid #e8edf4;border-radius:13px;padding:11px 13px;cursor:pointer}
+.bk-card:active{border-color:#FFC72C}
+.bk-card.delayed{background:#FFFBF3;border-color:#FAC775}
+.bk-card.cancelled{background:#f7f8f9;border-color:#e0e0e0}
+.bk-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.bk-title{font-size:12px;font-weight:700;color:#1a2a3a}
+.bk-sub{font-size:10px;color:#8a9bb0;margin-top:1px}
+.pill{font-size:9px;font-weight:700;border-radius:20px;padding:2px 8px;display:flex;align-items:center;gap:4px;flex-shrink:0}
+.pill-green{background:#EAF3DE;color:#27500A}
+.pill-yellow{background:#FAEEDA;color:#633806}
+.pill-amber{background:#FAEEDA;color:#633806}
+.pill-red{background:#FCEBEB;color:#791F1F}
+.bk-detail{font-size:11px;color:#5a6a7a;margin:3px 0}
+.bk-action{font-size:10px;font-weight:700;color:#00355F;margin-top:6px;cursor:pointer;display:inline-block}
+.bk-action-red{font-size:10px;font-weight:600;color:#A32D2D;margin-top:3px;cursor:pointer;display:block}
+.bk-quote{font-size:9px;color:#6a7f94;margin:4px 0;font-style:italic;line-height:1.4}
+.flight-times{display:flex;align-items:center;gap:8px;margin:5px 0}
+.flight-time{font-size:16px;font-weight:800;color:#00355F}
+.flight-time.struck{text-decoration:line-through;color:#aaa;font-size:13px}
+.flight-arrow{font-size:11px;color:#bbb}
+.flight-code{font-size:11px;color:#8a9bb0;font-weight:600}
+.hotel-notif{font-size:10px;color:#854F0B;font-weight:600;margin-top:5px;display:flex;align-items:center;gap:5px}
+
+.refund-bar{margin:7px 0 4px}
+.refund-steps{display:flex;align-items:center;margin-bottom:5px}
+.refund-step{display:flex;flex-direction:column;align-items:center;flex:1}
+.refund-dot{width:10px;height:10px;border-radius:50%;background:#e0e0e0;border:2px solid #ccc}
+.refund-dot.done{background:#27500A;border-color:#27500A}
+.refund-dot.active{background:#FFC72C;border-color:#854F0B}
+.refund-connector{height:2px;flex:1;background:#e0e0e0}
+.refund-connector.done{background:#27500A}
+.refund-label{font-size:8px;color:#8a9bb0;margin-top:3px;text-align:center;line-height:1.3}
+.refund-label.active{color:#854F0B;font-weight:700}
+.refund-label.done{color:#27500A;font-weight:700}
+.refund-amt{font-size:10px;color:#6a7f94;margin-top:2px}
+
+.suggest-section{margin:8px 16px 20px;border-radius:14px;border:0.5px dashed #d0dcea;padding:14px}
+.suggest-title{font-size:12px;font-weight:700;color:#8a9bb0;margin-bottom:10px}
+.suggest-card{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:0.5px solid #f0f0f0;cursor:pointer}
+.suggest-card:first-of-type{border-top:none;padding-top:0}
+.suggest-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.suggest-name{font-size:11px;font-weight:700;color:#1a2a3a}
+.suggest-cta{font-size:9px;font-weight:700;color:#00355F;background:#FFC72C;border-radius:10px;padding:3px 9px;white-space:nowrap}
+
+.cal-modal-bg{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);display:none;flex-direction:column;justify-content:flex-end;z-index:50}
+.cal-modal-bg.open{display:flex}
+.cal-modal{background:#fff;border-radius:22px 22px 0 0;padding:20px 20px 32px}
+.cal-title{font-size:15px;font-weight:700;color:#00355F;margin-bottom:14px}
+.cal-option{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:0.5px solid #f0f0f0;cursor:pointer}
+.cal-option:first-of-type{border-top:none;padding-top:4px}
+.cal-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cal-name{font-size:13px;font-weight:600;color:#1a2a3a}
+.cal-sub{font-size:10px;color:#8a9bb0}
+.cal-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:0.5px solid #f0f0f0}
+.cal-toggle-label{font-size:12px;color:#1a2a3a}
+.toggle{width:40px;height:22px;border-radius:11px;background:#00355F;position:relative;cursor:pointer;flex-shrink:0}
+.toggle-knob{position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:#FFC72C}
+.cal-close{width:100%;margin-top:14px;padding:11px;background:#f5f6f8;border-radius:12px;border:none;font-size:13px;font-weight:600;color:#5a6a7a;cursor:pointer}
+
+.back-btn{font-size:18px;color:#00355F;cursor:pointer;padding:2px 4px;line-height:1}
+.trip-header-inner{flex:1;margin-left:8px}
+.trip-name{font-size:16px;font-weight:800;color:#00355F}
+.trip-dates{font-size:11px;color:#8a9bb0;margin-top:1px}
+.trip-pills{display:flex;gap:7px;padding:8px 16px 0;flex-shrink:0}
+.status-pill-sm{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;border-radius:20px;padding:4px 10px}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cal-btn{font-size:10px;font-weight:600;color:#00355F;background:#fff;border:1px solid #c5d9f5;border-radius:20px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:#BA7517;animation:pulse 1.4s ease-in-out infinite;flex-shrink:0}
+
+.notif-panel{width:375px;border-radius:22px;border:2px solid #1a1a2e;overflow:hidden;background:#1c1c1e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.notif-header{padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between}
+.notif-time{font-size:28px;font-weight:700;color:#fff;line-height:1}
+.notif-date{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.notif-card{margin:0 10px 12px;background:rgba(255,255,255,.12);border-radius:14px;padding:12px 13px;backdrop-filter:blur(10px)}
+.notif-app-row{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.notif-app-icon{width:20px;height:20px;border-radius:5px;background:#00355F;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#FFC72C;flex-shrink:0;letter-spacing:-.3px}
+.notif-app-name{font-size:11px;font-weight:600;color:rgba(255,255,255,.6)}
+.notif-ts{font-size:10px;color:rgba(255,255,255,.4);margin-left:auto}
+.notif-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px}
+.notif-body{font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}
+.notif-actions{display:flex;gap:8px;margin-top:9px}
+.notif-btn{flex:1;background:rgba(255,255,255,.15);border-radius:9px;padding:7px;text-align:center;font-size:11px;font-weight:600;color:#fff;cursor:pointer}
+.notif-panel-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.35);text-align:center;padding:4px 0 10px}
+</style>
+
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Expedia app with delayed flight update and push notification tray</h2>
+
+<div class="outer">
+
+<div class="phone">
+  <div class="screen active" id="screen-exp1">
+    <div class="topbar"><div class="logo">expedia<span>.</span></div><div class="avatar">JL</div></div>
+    <div class="scrollable">
+      <div class="ai-section">
+        <div class="ai-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC72C" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>What kind of experience are you looking for?</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00355F" stroke-width="2"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 10a7 7 0 0 1-14 0M12 19v3M8 22h8"/></svg>
+        </div>
+        <div class="chips">
+          <div class="chip" onclick="this.classList.toggle('sel')">Outdoor adventures</div>
+          <div class="chip" onclick="this.classList.toggle('sel')">Hidden local eats</div>
+          <div class="chip" onclick="this.classList.toggle('sel')">Kid-friendly</div>
+        </div>
+      </div>
+      <div class="banner-trip">
+        <div><div style="font-size:10px;color:#FFC72C;font-weight:600;margin-bottom:3px">&#9992; Upcoming trip</div><div style="font-size:12px;color:#fff;font-weight:600">Your Barcelona trip is in 8 days</div></div>
+        <button class="btn-yellow" onclick="showScreen('screen-timeline')">See experiences</button>
+      </div>
+      <div class="sec-head"><p class="sec-title">Picked for you</p><p class="sec-sub">Based on your past trips, interests, and what's nearby</p></div>
+      <div class="hscroll">
+        <div class="hcard"><div class="hcard-img" style="background:linear-gradient(160deg,#c0392b,#8e1a0e)"><span class="rec-tag">Because you loved hiking</span></div><div class="hcard-body"><p class="hcard-name">Montserrat Sunrise Hike</p><p class="hcard-loc">Sant Joan, BCN</p><div class="hcard-row"><span class="hcard-price">$48</span><span class="star-txt">4.9 (312)</span></div><p class="trust-txt">Booked 41x this month</p></div></div>
+        <div class="hcard"><div class="hcard-img" style="background:linear-gradient(160deg,#e67e22,#b05a00)"></div><div class="hcard-body"><p class="hcard-name">Boqueria Market Cook &amp; Eat</p><p class="hcard-loc">El Raval, BCN</p><div class="hcard-row"><span class="hcard-price">$74</span><span class="star-txt">4.8 (189)</span></div><p class="trust-txt">With Chef Marta</p></div></div>
+        <div class="hcard"><div class="hcard-img" style="background:linear-gradient(160deg,#1565c0,#003b8e)"><span class="rec-tag">Popular near you</span></div><div class="hcard-body"><p class="hcard-name">Gothic Quarter Night Wander</p><p class="hcard-loc">Barri Gotic, BCN</p><div class="hcard-row"><span class="hcard-price">$29</span><span class="star-txt">4.7 (560)</span></div><p class="trust-txt">Booked 88x this month</p></div></div>
+      </div>
+      <div class="sec-head"><p class="sec-title">Trending in Barcelona</p></div>
+      <div class="vfeed">
+        <div class="vcard"><div class="vcard-img" style="background:linear-gradient(170deg,#2e7d32,#1a4d1e)"><span class="cat-badge-sm">Outdoor</span><div class="save-icon">&#9825;</div></div><div class="vcard-body"><span class="cat-tag" style="background:#EAF3DE;color:#27500A">Nature &amp; Hiking</span><p class="vcard-name">Collserola Ridge Trail with a Local</p><p class="vcard-review">"Completely off the tourist path - our guide knew every viewpoint by name."</p><div class="vcard-btm"><span class="vcard-price">$39 / person</span><span class="star-txt">4.9 (204)</span></div></div></div>
+        <div class="vcard"><div class="vcard-img" style="background:linear-gradient(170deg,#4a148c,#2a0a5a)"><span class="cat-badge-sm">Art</span><div class="save-icon">&#9825;</div></div><div class="vcard-body"><span class="cat-tag" style="background:#EEEDFE;color:#3C3489">Art &amp; Culture</span><p class="vcard-name">Poble Sec Murals &amp; Wine Walk</p><p class="vcard-review">"Found bars and art we'd never have discovered alone - felt like a secret city."</p><div class="vcard-btm"><span class="vcard-price">$52 / person</span><span class="star-txt">4.8 (147)</span></div></div></div>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="showScreen('screen-flights')"><span class="nav-icon">&#9992;</span><span class="nav-label">Flights</span></div>
+      <div class="nav-item" onclick="showScreen('screen-hotels')"><span class="nav-icon">&#127963;</span><span class="nav-label">Hotels</span></div>
+      <div class="nav-item" onclick="showScreen('screen-exp1')"><span class="nav-icon active">&#9733;</span><span class="nav-label active">Experiences</span><div class="nav-line"></div></div>
+      <div class="nav-item" onclick="showScreen('screen-more')"><span class="nav-icon">&#8943;</span><span class="nav-label">More</span></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-flights">
+    <div class="topbar"><div class="logo">expedia<span>.</span></div><div class="avatar">JL</div></div>
+    <div class="scrollable">
+      <div style="padding:20px 16px 10px"><p style="font-size:20px;font-weight:800;color:#00355F">Find flights</p><p style="font-size:12px;color:#8a9bb0;margin-top:2px">Search 500+ airlines worldwide</p></div>
+      <div style="padding:0 16px 14px;display:flex;flex-direction:column;gap:10px">
+        <div style="background:#f5f6f8;border-radius:13px;padding:13px 14px;border:0.5px solid #e8edf4"><p style="font-size:10px;color:#8a9bb0;font-weight:600;margin-bottom:4px">FROM</p><p style="font-size:14px;font-weight:700;color:#1a2a3a">Chicago (ORD)</p></div>
+        <div style="background:#f5f6f8;border-radius:13px;padding:13px 14px;border:0.5px solid #e8edf4"><p style="font-size:10px;color:#8a9bb0;font-weight:600;margin-bottom:4px">TO</p><p style="font-size:14px;font-weight:700;color:#1a2a3a">Barcelona (BCN)</p></div>
+        <div style="display:flex;gap:10px">
+          <div style="flex:1;background:#f5f6f8;border-radius:13px;padding:13px 14px;border:0.5px solid #e8edf4"><p style="font-size:10px;color:#8a9bb0;font-weight:600;margin-bottom:4px">DEPART</p><p style="font-size:13px;font-weight:700;color:#1a2a3a">May 22</p></div>
+          <div style="flex:1;background:#f5f6f8;border-radius:13px;padding:13px 14px;border:0.5px solid #e8edf4"><p style="font-size:10px;color:#8a9bb0;font-weight:600;margin-bottom:4px">RETURN</p><p style="font-size:13px;font-weight:700;color:#1a2a3a">May 29</p></div>
+        </div>
+        <button class="btn-yellow" style="width:100%;padding:13px;font-size:13px;border-radius:13px;cursor:pointer">Search flights</button>
+      </div>
+      <div style="padding:0 16px 12px">
+        <p style="font-size:13px;font-weight:700;color:#00355F;margin-bottom:10px">Your upcoming flight</p>
+        <div class="bk-card delayed" onclick="showScreen('screen-timeline')">
+          <div class="bk-row">
+            <div><p class="bk-title">&#9992; AA 728 - American Airlines</p></div>
+            <span class="pill pill-amber" style="background:#FAEEDA;color:#633806"><div class="pulse-dot"></div>Delayed 40 min</span>
+          </div>
+          <div class="flight-times">
+            <span class="flight-time struck">09:15</span>
+            <span style="font-size:16px;font-weight:800;color:#BA7517;margin-left:4px">11:40</span>
+            <span class="flight-code">ORD</span>
+            <span class="flight-arrow">&#8594;</span>
+            <span class="flight-time">23:40+</span>
+            <span class="flight-code">BCN</span>
+          </div>
+          <p class="bk-sub">New departure 11:40am, Gate B12 <span style="color:#BA7517;font-weight:600">(changed)</span></p>
+          <div class="hotel-notif">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Your hotel has been notified of your updated arrival time.
+          </div>
+          <span class="bk-action" style="margin-top:8px">Manage flight</span>
+        </div>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="showScreen('screen-flights')"><span class="nav-icon active">&#9992;</span><span class="nav-label active">Flights</span><div class="nav-line"></div></div>
+      <div class="nav-item" onclick="showScreen('screen-hotels')"><span class="nav-icon">&#127963;</span><span class="nav-label">Hotels</span></div>
+      <div class="nav-item" onclick="showScreen('screen-exp1')"><span class="nav-icon">&#9733;</span><span class="nav-label">Experiences</span></div>
+      <div class="nav-item" onclick="showScreen('screen-more')"><span class="nav-icon">&#8943;</span><span class="nav-label">More</span></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-hotels">
+    <div class="topbar"><div class="logo">expedia<span>.</span></div><div class="avatar">JL</div></div>
+    <div class="scrollable">
+      <div style="padding:20px 16px 10px"><p style="font-size:20px;font-weight:800;color:#00355F">Find hotels</p><p style="font-size:12px;color:#8a9bb0;margin-top:2px">500k+ properties worldwide</p></div>
+      <div style="padding:0 16px 14px;display:flex;flex-direction:column;gap:10px">
+        <div style="background:#f5f6f8;border-radius:13px;padding:13px 14px;border:0.5px solid #e8edf4"><p style="font-size:10px;color:#8a9bb0;font-weight:600;margin-bottom:4px">DESTINATION</p><p style="font-size:14px;font-weight:700;color:#1a2a3a">Barcelona, Spain</p></div>
+        <div style="display:flex;gap:10px">
+          <div style="flex:1;background:#f5f6f8;border-radius:13px;padding:13px 14px;border:0.5px solid #e8edf4"><p style="font-size:10px;color:#8a9bb0;font-weight:600;margin-bottom:4px">CHECK-IN</p><p style="font-size:13px;font-weight:700;color:#1a2a3a">May 22</p></div>
+          <div style="flex:1;background:#f5f6f8;border-radius:13px;padding:13px 14px;border:0.5px solid #e8edf4"><p style="font-size:10px;color:#8a9bb0;font-weight:600;margin-bottom:4px">CHECK-OUT</p><p style="font-size:13px;font-weight:700;color:#1a2a3a">May 29</p></div>
+        </div>
+        <button class="btn-yellow" style="width:100%;padding:13px;font-size:13px;border-radius:13px;cursor:pointer">Search hotels</button>
+      </div>
+      <div style="padding:0 16px 12px">
+        <p style="font-size:13px;font-weight:700;color:#00355F;margin-bottom:10px">Your confirmed hotel</p>
+        <div class="bk-card" onclick="showScreen('screen-timeline')">
+          <div class="bk-row"><div><p class="bk-title">Hotel Arts Barcelona &#9733;&#9733;&#9733;&#9733;&#9733;</p></div><span class="pill pill-green">Confirmed</span></div>
+          <p class="bk-detail">May 22 - May 29 (7 nights)</p>
+          <p class="bk-sub">Free cancellation until May 15</p>
+          <span class="bk-action">Manage booking</span>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="showScreen('screen-flights')"><span class="nav-icon">&#9992;</span><span class="nav-label">Flights</span></div>
+      <div class="nav-item" onclick="showScreen('screen-hotels')"><span class="nav-icon active">&#127963;</span><span class="nav-label active">Hotels</span><div class="nav-line"></div></div>
+      <div class="nav-item" onclick="showScreen('screen-exp1')"><span class="nav-icon">&#9733;</span><span class="nav-label">Experiences</span></div>
+      <div class="nav-item" onclick="showScreen('screen-more')"><span class="nav-icon">&#8943;</span><span class="nav-label">More</span></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-more">
+    <div class="topbar"><div class="logo">expedia<span>.</span></div><div class="avatar">JL</div></div>
+    <div class="scrollable">
+      <div style="padding:20px 16px 16px">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+          <div style="width:54px;height:54px;border-radius:50%;background:#00355F;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#FFC72C">JL</div>
+          <div><p style="font-size:16px;font-weight:800;color:#00355F">Jordan Lee</p><p style="font-size:11px;color:#8a9bb0">Expedia Member since 2019</p></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+          <div style="background:#EAF2FF;border-radius:13px;padding:13px;cursor:pointer" onclick="showScreen('screen-timeline')"><div style="font-size:20px;margin-bottom:4px">&#128197;</div><p style="font-size:12px;font-weight:700;color:#00355F">My Trips</p><p style="font-size:10px;color:#4a6a8a">1 upcoming</p></div>
+          <div style="background:#FFF8EC;border-radius:13px;padding:13px"><div style="font-size:20px;margin-bottom:4px">&#10084;</div><p style="font-size:12px;font-weight:700;color:#854F0B">Saved</p><p style="font-size:10px;color:#8a6e00">3 experiences</p></div>
+        </div>
+        <p style="font-size:12px;font-weight:700;color:#8a9bb0;margin-bottom:10px">ACCOUNT</p>
+        <div style="display:flex;flex-direction:column;gap:0;border:0.5px solid #e8edf4;border-radius:13px;overflow:hidden">
+          <div style="padding:13px 14px;border-bottom:0.5px solid #f0f0f0;font-size:12px;font-weight:600;color:#1a2a3a;cursor:pointer">Notifications</div>
+          <div style="padding:13px 14px;border-bottom:0.5px solid #f0f0f0;font-size:12px;font-weight:600;color:#1a2a3a;cursor:pointer">Payment methods</div>
+          <div style="padding:13px 14px;font-size:12px;font-weight:600;color:#1a2a3a;cursor:pointer">Help &amp; support</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="showScreen('screen-flights')"><span class="nav-icon">&#9992;</span><span class="nav-label">Flights</span></div>
+      <div class="nav-item" onclick="showScreen('screen-hotels')"><span class="nav-icon">&#127963;</span><span class="nav-label">Hotels</span></div>
+      <div class="nav-item" onclick="showScreen('screen-exp1')"><span class="nav-icon">&#9733;</span><span class="nav-label">Experiences</span></div>
+      <div class="nav-item" onclick="showScreen('screen-more')"><span class="nav-icon active">&#8943;</span><span class="nav-label active">More</span><div class="nav-line"></div></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-timeline">
+    <div class="topbar" style="padding:12px 16px 10px">
+      <span class="back-btn" onclick="showScreen('screen-exp1')">&#8592;</span>
+      <div class="trip-header-inner"><p class="trip-name">Barcelona Trip</p><p class="trip-dates">May 22 - May 29, 2025</p></div>
+      <button class="cal-btn" onclick="openCal()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00355F" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Add to cal
+      </button>
+    </div>
+    <div class="trip-pills">
+      <div class="status-pill-sm" style="background:#EAF3DE;color:#27500A"><div class="dot" style="background:#27500A"></div>4 confirmed</div>
+      <div class="status-pill-sm" style="background:#FAEEDA;color:#633806"><div class="dot" style="background:#FFC72C"></div>1 pending</div>
+    </div>
+    <div class="scrollable" style="margin-top:10px">
+      <div class="timeline-wrap">
+        <span class="day-label">Day 1 - Thu May 22</span>
+        <div class="day-group">
+          <div class="tl-line-col"><div class="tl-dot alert"></div><div class="tl-line"></div></div>
+          <div class="tl-cards">
+            <div class="bk-card delayed">
+              <div class="bk-row">
+                <p class="bk-title">&#9992; AA 728 - American Airlines</p>
+                <span class="pill" style="background:#FAEEDA;color:#633806;display:flex;align-items:center;gap:4px"><div class="pulse-dot"></div>Delayed 40 min</span>
+              </div>
+              <div class="flight-times">
+                <span class="flight-time struck">09:15</span>
+                <span style="font-size:16px;font-weight:800;color:#BA7517;margin-left:4px">11:40</span>
+                <span class="flight-code">ORD</span>
+                <span class="flight-arrow">&#8594;</span>
+                <span class="flight-time">23:40+</span>
+                <span class="flight-code">BCN</span>
+              </div>
+              <p class="bk-sub">New departure 11:40am, Gate B12 <span style="color:#BA7517;font-weight:600">(changed)</span></p>
+              <div class="hotel-notif">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Your hotel has been notified of your updated arrival time.
+              </div>
+              <span class="bk-action" style="margin-top:8px">Manage flight</span>
+            </div>
+            <div class="bk-card">
+              <div class="bk-row"><p class="bk-title">&#128663; Cabify Premium</p><span class="pill pill-green">Confirmed</span></div>
+              <p class="bk-detail">Pickup 00:10 from BCN Terminal 1</p>
+              <span class="bk-action">Manage booking</span>
+            </div>
+          </div>
+        </div>
+
+        <span class="day-label">Day 2 - Fri May 23</span>
+        <div class="day-group">
+          <div class="tl-line-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-cards">
+            <div class="bk-card">
+              <div class="bk-row"><div><p class="bk-title">&#127963; Hotel Arts Barcelona</p><p style="font-size:9px;color:#FFC72C">&#9733;&#9733;&#9733;&#9733;&#9733;</p></div><span class="pill pill-green">Confirmed</span></div>
+              <p class="bk-detail">Check-in May 22 &middot; Check-out May 29</p>
+              <p class="bk-sub">Free cancellation until May 15</p>
+              <span class="bk-action">Manage booking</span>
+            </div>
+            <div class="bk-card">
+              <div class="bk-row"><div><p class="bk-title">Boqueria Market Cook &amp; Eat</p><span class="cat-tag" style="background:#FAECE7;color:#993C1D;font-size:8px;padding:1px 7px;border-radius:8px;margin-bottom:0">Food Tour</span></div><span class="pill pill-green">Confirmed</span></div>
+              <p class="bk-detail">Fri May 23, 10:00am &middot; El Raval entrance</p>
+              <p class="bk-quote">"Chef Marta made us feel like we were cooking in her own kitchen." - Priya S., Feb 2025</p>
+              <span class="bk-action">Manage booking</span>
+              <span class="bk-action-red">Cancel</span>
+            </div>
+          </div>
+        </div>
+
+        <span class="day-label">Day 4 - Sun May 25</span>
+        <div class="day-group">
+          <div class="tl-line-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-cards">
+            <div class="bk-card">
+              <div class="bk-row"><div><p class="bk-title">Montserrat Sunrise Hike</p><span class="cat-tag" style="background:#EAF3DE;color:#27500A;font-size:8px;padding:1px 7px;border-radius:8px;margin-bottom:0">Outdoor</span></div><span class="pill pill-yellow">Pending</span></div>
+              <p class="bk-detail">Sun May 25, 06:30am &middot; Placa Espanya bus stop</p>
+              <p class="bk-quote">"The guide knew every trail - we were back in time for breakfast." - Tom K., Mar 2025</p>
+              <span class="bk-action">Manage booking</span>
+              <span class="bk-action-red">Cancel</span>
+            </div>
+          </div>
+        </div>
+
+        <span class="day-label">Day 6 - Tue May 27</span>
+        <div class="day-group">
+          <div class="tl-line-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-cards">
+            <div class="bk-card cancelled">
+              <div class="bk-row"><div><p class="bk-title">Gothic Quarter Night Wander</p><span class="cat-tag" style="background:#f0f0f0;color:#5F5E5A;font-size:8px;padding:1px 7px;border-radius:8px;margin-bottom:0">Walking Tour</span></div><span class="pill pill-red">Cancelled</span></div>
+              <p class="bk-detail">Tue May 27, 08:00pm &middot; Cathedral steps</p>
+              <div class="refund-bar">
+                <div class="refund-steps">
+                  <div class="refund-step"><div class="refund-dot done"></div><p class="refund-label done">Cancellation<br>received</p></div>
+                  <div class="refund-connector done"></div>
+                  <div class="refund-step"><div class="refund-dot active"></div><p class="refund-label active">Refund<br>initiated</p></div>
+                  <div class="refund-connector"></div>
+                  <div class="refund-step"><div class="refund-dot pending"></div><p class="refund-label">Refund<br>complete</p></div>
+                </div>
+                <p class="refund-amt">Est. $84.00 to Visa ending 4242 by May 18</p>
+              </div>
+              <span class="bk-action">View refund details</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="suggest-section">
+          <p class="suggest-title">You haven't booked yet</p>
+          <div class="suggest-card"><div class="suggest-icon" style="background:#EAF2FF">&#128663;</div><div class="suggest-text"><p class="suggest-name">Need a transfer on Day 3?</p><p style="font-size:9px;color:#8a9bb0">Airport to hotel, from $18</p></div><span class="suggest-cta">Explore</span></div>
+          <div class="suggest-card"><div class="suggest-icon" style="background:#FFF8EC">&#127829;</div><div class="suggest-text"><p class="suggest-name">Dinner on your last night?</p><p style="font-size:9px;color:#8a9bb0">Top-rated local spots, from $34</p></div><span class="suggest-cta">Explore</span></div>
+        </div>
+        <div style="height:12px"></div>
+      </div>
+    </div>
+
+    <div class="cal-modal-bg" id="cal-modal">
+      <div class="cal-modal">
+        <p class="cal-title">Add Barcelona Trip to calendar</p>
+        <div class="cal-option"><div class="cal-icon" style="background:#EAF2FF">&#128197;</div><div><p class="cal-name">Google Calendar</p><p class="cal-sub">Opens in Google Calendar app</p></div></div>
+        <div class="cal-option"><div class="cal-icon" style="background:#f5f6f8">&#128196;</div><div><p class="cal-name">Apple Calendar</p><p class="cal-sub">Downloads .ics file</p></div></div>
+        <div class="cal-toggle-row"><span class="cal-toggle-label">Sync future updates automatically</span><div class="toggle"><div class="toggle-knob"></div></div></div>
+        <button class="cal-close" onclick="closeCal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="notif-panel">
+  <div class="notif-header">
+    <div><div class="notif-time">9:41</div><div class="notif-date">Tuesday, May 22</div></div>
+  </div>
+  <div class="notif-card">
+    <div class="notif-app-row">
+      <div class="notif-app-icon">ex</div>
+      <span class="notif-app-name">Expedia</span>
+      <span class="notif-ts">just now</span>
+    </div>
+    <p class="notif-title">Flight alert: AA 728 delayed</p>
+    <p class="notif-body">Your BCN flight is delayed 40 min, gate changed to B12. Your hotel check-in has been notified.</p>
+    <div class="notif-actions">
+      <div class="notif-btn" onclick="showScreen('screen-timeline');document.querySelector('.phone').scrollIntoView()">View trip</div>
+      <div class="notif-btn">Dismiss</div>
+    </div>
+  </div>
+  <div class="notif-panel-label">Swipe up to unlock</div>
+</div>
+
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  var s=document.getElementById(id);
+  if(s){s.classList.add('active');var sc=s.querySelector('.scrollable');if(sc)sc.scrollTop=0}
+}
+function openCal(){document.getElementById('cal-modal').classList.add('open')}
+function closeCal(){document.getElementById('cal-modal').classList.remove('open')}
+</script>
